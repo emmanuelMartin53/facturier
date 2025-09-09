@@ -21,7 +21,6 @@ export class Datas implements HasHtmlFormat {
     const tvaPercent = tva / 100; // 20% = 0,2
     const totalTva = price * tvaPercent;
     return (price + totalTva) * quantity;
-
   }
 
   htmlFormat()  {
