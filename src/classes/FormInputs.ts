@@ -22,6 +22,7 @@ export class FormInput {
   docContainer: HTMLDivElement;
   hiddenDiv: HTMLDivElement;
   printButton: HTMLButtonElement;
+  reloadButton: HTMLButtonElement;
 
 
 
@@ -43,12 +44,14 @@ export class FormInput {
     this.docContainer = document.getElementById("document-container") as HTMLDivElement;
     this.hiddenDiv = document.getElementById("hiddenDiv") as HTMLDivElement;
     this.printButton = document.getElementById("print") as HTMLButtonElement;
+    this.reloadButton = document.getElementById("reload") as HTMLButtonElement;
 
 
 
     // Listener
     this.submitFormListener();
     this.printListener(this.printButton, this.docContainer);
+    this.reloadListener(this.reloadButton)
 
   }
 
@@ -66,6 +69,12 @@ export class FormInput {
     })
   }
 
+  private reloadListener (reloadButton: HTMLButtonElement): void {
+    reloadButton.addEventListener("click", () => {
+      document.location.reload();
+      window.scrollTo(0,0)
+    })
+  }
 
   private handleFormSubmit (event: Event) {
     event.preventDefault();

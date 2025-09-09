@@ -17,6 +17,7 @@ export class FormInput {
     docContainer;
     hiddenDiv;
     printButton;
+    reloadButton;
     constructor() {
         this.form = document.querySelector("#form");
         this.type = document.querySelector("#type");
@@ -33,9 +34,11 @@ export class FormInput {
         this.docContainer = document.getElementById("document-container");
         this.hiddenDiv = document.getElementById("hiddenDiv");
         this.printButton = document.getElementById("print");
+        this.reloadButton = document.getElementById("reload");
         // Listener
         this.submitFormListener();
         this.printListener(this.printButton, this.docContainer);
+        this.reloadListener(this.reloadButton);
     }
     // Listeners
     submitFormListener() {
@@ -46,6 +49,12 @@ export class FormInput {
             let availableDoc;
             availableDoc = new Print(docContainer);
             availableDoc.print();
+        });
+    }
+    reloadListener(reloadButton) {
+        reloadButton.addEventListener("click", () => {
+            document.location.reload();
+            window.scrollTo(0, 0);
         });
     }
     handleFormSubmit(event) {
