@@ -15,9 +15,12 @@ export class FormInput {
     quantity;
     tva;
     docContainer;
+    storedData;
     hiddenDiv;
     printButton;
     reloadButton;
+    invoiceButton;
+    estimateButton;
     constructor() {
         this.form = document.querySelector("#form");
         this.type = document.querySelector("#type");
@@ -31,14 +34,18 @@ export class FormInput {
         this.price = document.getElementById("price");
         this.quantity = document.getElementById("quantity");
         this.tva = document.getElementById("tva");
+        this.storedData = document.getElementById("stored-data");
         this.docContainer = document.getElementById("document-container");
         this.hiddenDiv = document.getElementById("hiddenDiv");
         this.printButton = document.getElementById("print");
         this.reloadButton = document.getElementById("reload");
+        this.invoiceButton = document.getElementById("stored-invoices");
+        this.estimateButton = document.getElementById("stored-estimates");
         // Listener
         this.submitFormListener();
         this.printListener(this.printButton, this.docContainer);
         this.reloadListener(this.reloadButton);
+        this.getStoreDocsListener();
     }
     // Listeners
     submitFormListener() {
@@ -56,6 +63,37 @@ export class FormInput {
             document.location.reload();
             window.scrollTo(0, 0);
         });
+    }
+    getStoreDocsListener() {
+        this.invoiceButton.addEventListener("click", this.getItems.bind(this, 'invoice'));
+        this.estimateButton.addEventListener("click", this.getItems.bind(this, 'estimate'));
+    }
+    getItems(docType) {
+        if (this.storedData.hasChildNodes()) {
+            this.storedData.innerHTML = "";
+        }
+        if (localStorage.getItem(docType)) {
+            let array;
+            array = localStorage.getItem(docType);
+            if (array !== null && array.length > 2) {
+                let arrayData;
+                arrayData = JSON.parse(array);
+                arrayData.map((doc) => {
+                    let card = document.createElement("div");
+                    let cardBody = document.createElement("div");
+                    let cardClasses = ['card', 'mt-5'];
+                    let cardBodyClasses = "card-body";
+                    card.classList.add(...cardClasses);
+                    cardBody.classList.add(cardBodyClasses);
+                    cardBody.innerHTML = doc;
+                    card.append(cardBody);
+                    this.storedData.append(card);
+                });
+            }
+            else {
+                this.storedData.innerHTML = `<div class="p-5"> Aucune Data disponible </div>`;
+            }
+        }
     }
     handleFormSubmit(event) {
         event.preventDefault();
