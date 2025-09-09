@@ -1,5 +1,6 @@
 import { Datas } from "../classes/Datas.js";
 import { Display } from "./Display.js";
+import { Print } from "./Print.js";
 export class FormInput {
     form;
     type;
@@ -34,10 +35,18 @@ export class FormInput {
         this.printButton = document.getElementById("print");
         // Listener
         this.submitFormListener();
+        this.printListener(this.printButton, this.docContainer);
     }
     // Listeners
     submitFormListener() {
         this.form.addEventListener("submit", this.handleFormSubmit.bind(this));
+    }
+    printListener(printButton, docContainer) {
+        printButton.addEventListener("click", () => {
+            let availableDoc;
+            availableDoc = new Print(docContainer);
+            availableDoc.print();
+        });
     }
     handleFormSubmit(event) {
         event.preventDefault();
