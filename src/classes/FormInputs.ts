@@ -1,9 +1,10 @@
-import { HasHtmlFormat } from "../interfaces/HasHtmlFormat.js";
-import { Datas } from "../classes/Datas.js"
-import { HasRender } from "../interfaces/HasRender.js";
-import { Display } from "./Display.js";
-import { HasPrint } from "../interfaces/HasPrint.js";
-import { Print } from "./Print.js";
+import { HasHtmlFormat } from "../interfaces/HasHtmlFormat";
+import { Datas } from "../classes/Datas"
+import { HasRender } from "../interfaces/HasRender";
+import { Display } from "./Display";
+import { HasPrint } from "../interfaces/HasPrint";
+import { Print } from "./Print";
+import { bind } from "../decorators/Bind";
 
 export class FormInput {
 
@@ -67,7 +68,7 @@ export class FormInput {
   // Listeners
 
   private submitFormListener (): void {
-    this.form.addEventListener("submit", this.handleFormSubmit.bind(this))
+    this.form.addEventListener("submit", this.handleFormSubmit)
   }
 
   private printListener (printButton: HTMLButtonElement, docContainer: HTMLDivElement): void {
@@ -86,11 +87,13 @@ export class FormInput {
   }
 
   private getStoreDocsListener(): void {
-    this.invoiceButton.addEventListener("click", this.getItems.bind(this,'invoice'))
-    this.estimateButton.addEventListener("click", this.getItems.bind(this,'estimate'))
+    this.invoiceButton.addEventListener("click", () => this.getItems('invoice'))
+    this.estimateButton.addEventListener("click", () => this.getItems('estimate'))
   }
 
   private getItems (docType: string) {
+
+    console.log(this)
     if (this.storedData.hasChildNodes()) {
         this.storedData.innerHTML = ""
     }
@@ -123,9 +126,10 @@ export class FormInput {
     }
   }
 
+  @bind
   private handleFormSubmit (event: Event) {
     event.preventDefault();
-
+    console.log(this) // => donne accès à l'objet instancié de la classe => FormInput
     const inputs = this.inputDatas() // => Renvoie soit un Array, soit Undefined
 
     if (Array.isArray(inputs)) {

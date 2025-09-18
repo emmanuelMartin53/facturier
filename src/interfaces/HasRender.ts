@@ -1,4 +1,4 @@
-import { HasHtmlFormat } from "./HasHtmlFormat.js";
+import { HasHtmlFormat } from "./HasHtmlFormat";
 
 
 // Création de l'interface HasRender

@@ -1,6 +1,13 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { Datas } from "../classes/Datas.js";
 import { Display } from "./Display.js";
 import { Print } from "./Print.js";
+import { bind } from "../decorators/Bind.js";
 export class FormInput {
     form;
     type;
@@ -49,7 +56,7 @@ export class FormInput {
     }
     // Listeners
     submitFormListener() {
-        this.form.addEventListener("submit", this.handleFormSubmit.bind(this));
+        this.form.addEventListener("submit", this.handleFormSubmit);
     }
     printListener(printButton, docContainer) {
         printButton.addEventListener("click", () => {
@@ -65,10 +72,11 @@ export class FormInput {
         });
     }
     getStoreDocsListener() {
-        this.invoiceButton.addEventListener("click", this.getItems.bind(this, 'invoice'));
-        this.estimateButton.addEventListener("click", this.getItems.bind(this, 'estimate'));
+        this.invoiceButton.addEventListener("click", () => this.getItems('invoice'));
+        this.estimateButton.addEventListener("click", () => this.getItems('estimate'));
     }
     getItems(docType) {
+        console.log(this);
         if (this.storedData.hasChildNodes()) {
             this.storedData.innerHTML = "";
         }
@@ -97,6 +105,7 @@ export class FormInput {
     }
     handleFormSubmit(event) {
         event.preventDefault();
+        console.log(this); // => donne accès à l'objet instancié de la classe => FormInput
         const inputs = this.inputDatas(); // => Renvoie soit un Array, soit Undefined
         if (Array.isArray(inputs)) {
             const [type, firstName, lastName, address, country, town, zip, product, price, quantity, tva] = inputs;
@@ -128,3 +137,6 @@ export class FormInput {
         return;
     }
 }
+__decorate([
+    bind
+], FormInput.prototype, "handleFormSubmit", null);
