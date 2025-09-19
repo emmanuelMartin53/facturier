@@ -21,5 +21,13 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"]
   },
-  plugins: [new cleanPlugin.CleanWebpackPlugin()],
+  plugins: [new cleanPlugin.CleanWebpackPlugin({
+    dry: true,
+    verbose: true,
+      cleanOnceBeforeBuildPatterns: [
+        '**/*',
+        '!static-files*',
+        '!directoryToExclude/**',
+    ],
+  })],
 };
